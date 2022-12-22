@@ -17,6 +17,8 @@ public class Line {
         this(p1.getX(), p1.getY(), p2.getX(), p2.getY(), color);
     }
 
+
+
     public int getX1() {
         return x1;
     }

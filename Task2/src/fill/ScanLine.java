@@ -13,6 +13,7 @@ public class ScanLine implements Filler {
 
     private final Raster raster;
     private final List<Point> vrcholyPolygonu;
+    private List<Line> usecky;
     private int fillColor = Color.RED.getRGB();
     private final Polygon polygonToFill;
     int ymin, ymax;
@@ -31,7 +32,7 @@ public class ScanLine implements Filler {
 
     private void fillPolygon() {
 //        polygonToFill = new Polygon(vrcholyPolygonu);
-        List<Line> lines = prepareLines(polygonToFill.getPolygonBorders(vrcholyPolygonu));
+          usecky = prepareLines(polygonToFill.getPolygonBorders(vrcholyPolygonu));
 
     }
 
@@ -39,14 +40,18 @@ public class ScanLine implements Filler {
      * Vnitrni trida pro vytvoreni usecek z hran polygonu
      */
 
-    private class Usecka extends Line {
-
-        public Usecka(int x1, int y1, int x2, int y2, int color) {
-            super(x1, y1, x2, y2, color);
-        }
-
-        // TODO - implementovat metody dle Slide 43 v Olive
-    }
+//    private class Usecka extends Line {
+//
+//        public int x1, y1, x2, y2;
+//        public float k, q;
+//
+//        public Usecka(int x1, int y1, int x2, int y2, int color) {
+//            super(x1, y1, x2, y2, color);
+//        }
+//
+//        public void prohod
+//        // TODO - implementovat metody dle Slide 43 v Olive
+//    }
 
 
 
@@ -62,5 +67,9 @@ public class ScanLine implements Filler {
             }
         }
         return preparedLines;
+    }
+
+    private List<Point> getPruseciky(List<Line> usecky) {
+        return null;                                // null jenom k odstraneni chyby
     }
 }
