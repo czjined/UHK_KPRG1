@@ -7,6 +7,8 @@ import rasterize.Raster;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ScanLine implements Filler {
@@ -16,13 +18,16 @@ public class ScanLine implements Filler {
     private List<Line> usecky;
     private int fillColor = Color.RED.getRGB();
     private final Polygon polygonToFill;
-    int ymin, ymax;
+    private List<Point> pruseciky;
+    int ymax = 0;
+    int ymin;
 
 
     public ScanLine(Raster raster, List<Point> vrcholyPolygonu) {
         this.raster = raster;
         this.vrcholyPolygonu = vrcholyPolygonu;
         this.polygonToFill = new Polygon(vrcholyPolygonu);
+        ymin = raster.getHeight();
     }
 
     @Override
@@ -31,7 +36,6 @@ public class ScanLine implements Filler {
     }
 
     private void fillPolygon() {
-//        polygonToFill = new Polygon(vrcholyPolygonu);
           usecky = prepareLines(polygonToFill.getPolygonBorders(vrcholyPolygonu));
 
     }
@@ -64,12 +68,25 @@ public class ScanLine implements Filler {
                 } else {
                     preparedLines.add(new Line(line.getX2(), line.getY2(), line.getX1(), line.getY1()-1, fillColor));
                 }
+                if (preparedLines.get(preparedLines.size()-1).getY2() > ymax) {ymax = preparedLines.get(preparedLines.size()-1).getY2();}
+                if (preparedLines.get(preparedLines.size()-1).getY1() < ymin) {ymin = preparedLines.get(preparedLines.size()-1).getY1();}
             }
         }
         return preparedLines;
     }
 
     private List<Point> getPruseciky(List<Line> usecky) {
-        return null;                                // null jenom k odstraneni chyby
+        pruseciky = new ArrayList<>();
+        float k, q;
+        for (Line usecka: usecky) {
+            k = (usecka.getX2()-usecka.getX1())/(float)(usecka.getY2()-usecka.getY1());
+            q = usecka.getX1() - k * usecka.getY1();
+            for ( int i = usecka.getY1(); i <= usecka.getY2(); i++) {
+                int prusX = Math.round( k * i + q);
+                pruseciky.add(new Point(prusX, i));
+            }
+        }
+        pruseciky.sort(Comparator.comparingInt(Point::getY));
+        return pruseciky;
     }
 }
