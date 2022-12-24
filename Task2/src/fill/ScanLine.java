@@ -4,6 +4,7 @@ import model.Line;
 import model.Point;
 import model.Polygon;
 import rasterize.Raster;
+import rasterize.TrivialLineRasterizer;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class ScanLine implements Filler {
     private final Raster raster;
     private final List<Point> vrcholyPolygonu;
     private List<Line> usecky;
-    private int fillColor = Color.RED.getRGB();
+    private Color fillColor = Color.RED;
     private final Polygon polygonToFill;
     private List<Point> pruseciky;
     int ymax = 0;
@@ -37,26 +38,10 @@ public class ScanLine implements Filler {
 
     private void fillPolygon() {
           usecky = prepareLines(polygonToFill.getPolygonBorders(vrcholyPolygonu));
-
+          getPruseciky(usecky);
+          fillHorizontal(10);
+          fillBorder();
     }
-
-    /**
-     * Vnitrni trida pro vytvoreni usecek z hran polygonu
-     */
-
-//    private class Usecka extends Line {
-//
-//        public int x1, y1, x2, y2;
-//        public float k, q;
-//
-//        public Usecka(int x1, int y1, int x2, int y2, int color) {
-//            super(x1, y1, x2, y2, color);
-//        }
-//
-//        public void prohod
-//        // TODO - implementovat metody dle Slide 43 v Olive
-//    }
-
 
 
     private List<Line> prepareLines(List<Line> lineList) {
@@ -64,9 +49,9 @@ public class ScanLine implements Filler {
         for (Line line: lineList) {
             if (line.getY1() != line.getY2()) {                 // Neberu vodorovne hrany
                 if (line.getY2() > line.getY1()) {              // Smerovani usecek dolu (Y2 > Y1)
-                    preparedLines.add(new Line(line.getX1(), line.getY1(), line.getX2(), line.getY2()-1, fillColor));
+                    preparedLines.add(new Line(line.getX1(), line.getY1(), line.getX2(), line.getY2()-1, fillColor.getRGB()));
                 } else {
-                    preparedLines.add(new Line(line.getX2(), line.getY2(), line.getX1(), line.getY1()-1, fillColor));
+                    preparedLines.add(new Line(line.getX2(), line.getY2(), line.getX1(), line.getY1()-1, fillColor.getRGB()));
                 }
                 if (preparedLines.get(preparedLines.size()-1).getY2() > ymax) {ymax = preparedLines.get(preparedLines.size()-1).getY2();}
                 if (preparedLines.get(preparedLines.size()-1).getY1() < ymin) {ymin = preparedLines.get(preparedLines.size()-1).getY1();}
@@ -87,6 +72,31 @@ public class ScanLine implements Filler {
             }
         }
         pruseciky.sort(Comparator.comparingInt(Point::getY));
+        System.out.println("Vypisuji pruseciky:"+ pruseciky);
         return pruseciky;
     }
+
+    private void fillHorizontal(int srafa) {
+        int xFill1, xFill2;
+        for (int i = ymin; i <= ymax; i += srafa) {
+            for (int j = 0; j < pruseciky.size(); j += 2) {
+                xFill1 = pruseciky.get(j).getX();
+                xFill2 = pruseciky.get(j+1).getX();
+                if ((pruseciky.get(j).getY() == i) && (pruseciky.get(j+1).getY() == i)) {
+                    TrivialLineRasterizer horizontalRasterizer = new TrivialLineRasterizer(raster);
+                    horizontalRasterizer.rasterize(xFill1, i, xFill2, i, fillColor);
+                }
+            }
+        }
+
+    }
+
+    private void fillBorder() {
+        TrivialLineRasterizer borderRasterizer = new TrivialLineRasterizer(raster);
+        for (Line border: polygonToFill.getPolygonBorders(vrcholyPolygonu)) {
+            borderRasterizer.rasterize(border.getX1(), border.getY1(), border.getX2(), border.getY2(), Color.GREEN);
+        }
+
+    }
+
 }

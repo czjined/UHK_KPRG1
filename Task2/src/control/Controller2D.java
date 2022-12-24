@@ -1,5 +1,6 @@
 package control;
 
+import fill.ScanLine;
 import fill.SeedFill;
 import rasterize.*;
 import view.Panel;
@@ -20,6 +21,7 @@ public class Controller2D implements Controller {
     LineRasterizer dashedLineRasterizer;
     LineRasterizer polygonRasterizer;
     SeedFill seedFiller;
+    ScanLine scanLineFiller;
     private LineRasterizerGraphics rasterizer;
 
     public Controller2D(Panel panel) {
@@ -62,10 +64,11 @@ public class Controller2D implements Controller {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.isControlDown()) {                    // Tady bude Scan-line vybarveni
-                    return;
+                if (e.isControlDown()) {                    // Scan-line vybarveni
+                    scanLineFiller = new ScanLine(raster, polygon2d.getPoints());
+                    scanLineFiller.fill();
                 }
-                if (e.isShiftDown()) {                              // Vybarvovani Seedem (dle pozadi)
+                 else if (e.isShiftDown()) {                              // Vybarvovani Seedem (dle pozadi)
                     if (SwingUtilities.isLeftMouseButton(e)) {
                         seedFiller = new SeedFill(raster, e.getX(), e.getY(), Color.YELLOW.getRGB());
                         seedFiller.fill();
@@ -76,7 +79,7 @@ public class Controller2D implements Controller {
                         int y1 = e.getY();
                         if (polygonVykreslen) {  // Zacinam zadavat body noveho polygonu
                             update();
-                            polygon2d.clearPoints();
+//                            polygon2d.clearPoints();
                         }
                         model.Point clickedPoint = new model.Point(x1,y1);
                         raster.setPixel(x1, y1, Color.GREEN.getRGB());
@@ -103,7 +106,7 @@ public class Controller2D implements Controller {
                     }
 
                     if (e.isShiftDown()) {
-                        //TODO
+
 
                     } else if (SwingUtilities.isLeftMouseButton(e)) {
                         raster.clear();
@@ -112,7 +115,7 @@ public class Controller2D implements Controller {
                         raster.clear();
                         dashedLineRasterizer.rasterize(x, y, e.getX(), e.getY(), Color.YELLOW);
                     } else if (SwingUtilities.isMiddleMouseButton(e)) {
-                        //TODO
+
                     }
                 } catch (ArrayIndexOutOfBoundsException e1) {
 
@@ -146,7 +149,7 @@ public class Controller2D implements Controller {
 
     private void update() {
         panel.clear();
-        //TODO
+        polygon2d.clearPoints();
 
     }
 
