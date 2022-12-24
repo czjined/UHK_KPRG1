@@ -33,7 +33,7 @@ public class Polygon {
     }
 
     public List<Line> getPolygonBorders(List<Point> polygonPoints) {
-        if (polygonPoints.size()>2) {
+        if (polygonPoints.size() > 2) {
             Point tmpPoint = new Point();
             Point firstPoint = new Point();
             int listIndex = 0;
@@ -51,7 +51,9 @@ public class Polygon {
                 tmpPoint = new Point(point.getX(), point.getY());
             }
 //            return polygonBorders;
-        } else {System.out.println("Malo vrcholovych bodu, nejedna se o polygon!");}
+        } else {
+            System.out.println("Malo vrcholovych bodu, nejedna se o polygon!");
+        }
         return polygonBorders;
     }
 

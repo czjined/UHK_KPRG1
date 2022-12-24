@@ -13,7 +13,7 @@ public class TrivialLineRasterizer extends LineRasterizer {
         int forStart = x1;
         int forEnd = x2;
 
-        if (x2-x1 !=0) {
+        if (x2 - x1 != 0) {
             float k = (y2 - y1) / (float) (x2 - x1);
             float q = y1 - k * x1;
             if (Math.abs(k) <= 1) {
@@ -23,7 +23,7 @@ public class TrivialLineRasterizer extends LineRasterizer {
                 }
                 for (int i = forStart; i < forEnd; i++) {
                     float y = i * k + q;
-                    if ((i > 0 || i < raster.getWidth()-1) && (Math.round(y) > 0 || Math.round(y) < raster.getHeight()-1)){
+                    if ((i > 0 || i < raster.getWidth() - 1) && (Math.round(y) > 0 || Math.round(y) < raster.getHeight() - 1)) {
                         raster.setPixel(i, Math.round(y), color.getRGB());
                     }
                 }
@@ -36,14 +36,13 @@ public class TrivialLineRasterizer extends LineRasterizer {
                     forEnd = y2;
                 }
                 for (int i = forStart; i < forEnd; i++) {
-                    float x = (i - q)/k;
-                    if ((Math.round(x) > 0 || Math.round(x) < raster.getWidth()-1) && (i > 0 || i < raster.getHeight()-1)) {
+                    float x = (i - q) / k;
+                    if ((Math.round(x) > 0 || Math.round(x) < raster.getWidth() - 1) && (i > 0 || i < raster.getHeight() - 1)) {
                         raster.setPixel(Math.round(x), i, color.getRGB());
                     }
                 }
 
             }
-
 
 
         } else {
@@ -55,7 +54,7 @@ public class TrivialLineRasterizer extends LineRasterizer {
                 forEnd = y1;
             }
             for (int i = forStart; i <= forEnd; i++) {
-                if ((x1 > 0 || x1 < raster.getWidth()-1) && (i > 0 || i < raster.getHeight()-1)) {
+                if ((x1 > 0 || x1 < raster.getWidth() - 1) && (i > 0 || i < raster.getHeight() - 1)) {
                     raster.setPixel(x1, i, color.getRGB());
                 }
             }

@@ -15,7 +15,7 @@ public class Controller2D implements Controller {
     private final Raster raster;
 
     private boolean polygonVykreslen = false;
-    private int x,y;
+    private int x, y;
     private model.Polygon polygon2d;
     LineRasterizer trivialLineRasterizer;
     LineRasterizer dashedLineRasterizer;
@@ -38,7 +38,7 @@ public class Controller2D implements Controller {
         polygonRasterizer = new PolygonRasterizer(raster);
         polygon2d = new model.Polygon();
 //        seedFiller = new SeedFill(raster);
-     }
+    }
 
     @Override
     public void initListeners(Panel panel) {
@@ -46,7 +46,8 @@ public class Controller2D implements Controller {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (e.isControlDown()) {return;
+                if (e.isControlDown()) {
+                    return;
 
 
                 } else if (SwingUtilities.isLeftMouseButton(e)) {
@@ -80,7 +81,7 @@ public class Controller2D implements Controller {
                             update();
 //                            polygon2d.clearPoints();
                         }
-                        model.Point clickedPoint = new model.Point(x1,y1);
+                        model.Point clickedPoint = new model.Point(x1, y1);
                         raster.setPixel(x1, y1, Color.GREEN.getRGB());
                         polygon2d.pointToAdd(clickedPoint);
                         polygonVykreslen = false;
@@ -102,9 +103,7 @@ public class Controller2D implements Controller {
                 try {
                     if (e.isControlDown()) {
                         return;
-                    }
-
-                    else if (e.isShiftDown()) {
+                    } else if (e.isShiftDown()) {
 
 
                     } else if (SwingUtilities.isLeftMouseButton(e)) {

@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PolygonRasterizer extends LineRasterizer{
+public class PolygonRasterizer extends LineRasterizer {
 
 
     public PolygonRasterizer(Raster raster) {
@@ -18,7 +18,7 @@ public class PolygonRasterizer extends LineRasterizer{
 
     @Override
     public void drawPolygonPoints(List<Point> polygonPoint) {
-        for (Point point: polygonPoint) {
+        for (Point point : polygonPoint) {
             raster.setPixel(point.getX(), point.getY(), Color.GREEN.getRGB());
         }
     }
@@ -28,10 +28,12 @@ public class PolygonRasterizer extends LineRasterizer{
         if (polygonPoint.size() > 2) {
             Polygon polygon = new Polygon(polygonPoint);
             List<Line> borders = polygon.getPolygonBorders(polygonPoint);
-            for (Line border: borders) {
+            for (Line border : borders) {
                 rasterize(border);
             }
-        } else {System.out.println("Nelze vykreslit, nejedna se o polygon!");}
+        } else {
+            System.out.println("Nelze vykreslit, nejedna se o polygon!");
+        }
     }
 
     @Override

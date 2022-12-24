@@ -2,7 +2,7 @@ package model;
 
 public class Line {
 
-    private final int  x1, y1, x2, y2;
+    private final int x1, y1, x2, y2;
     private final int color;
 
     public Line(int x1, int y1, int x2, int y2, int color) {
@@ -16,7 +16,6 @@ public class Line {
     public Line(Point p1, Point p2, int color) {
         this(p1.getX(), p1.getY(), p2.getX(), p2.getY(), color);
     }
-
 
 
     public int getX1() {
