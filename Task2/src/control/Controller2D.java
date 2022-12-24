@@ -55,7 +55,7 @@ public class Controller2D implements Controller {
                     y = e.getY();
 
                 } else if (SwingUtilities.isMiddleMouseButton(e)) {
-                    //TODO
+
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     x = e.getX();
                     y = e.getY();
@@ -64,11 +64,10 @@ public class Controller2D implements Controller {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.isControlDown()) {                    // Scan-line vybarveni
-                    scanLineFiller = new ScanLine(raster, polygon2d.getPoints());
-                    scanLineFiller.fill();
+                if (e.isControlDown()) {
+                    return;
                 }
-                 else if (e.isShiftDown()) {                              // Vybarvovani Seedem (dle pozadi)
+                if (e.isShiftDown()) {                              // Vybarvovani Seedem (dle pozadi)
                     if (SwingUtilities.isLeftMouseButton(e)) {
                         seedFiller = new SeedFill(raster, e.getX(), e.getY(), Color.YELLOW.getRGB());
                         seedFiller.fill();
@@ -105,14 +104,14 @@ public class Controller2D implements Controller {
                         return;
                     }
 
-                    if (e.isShiftDown()) {
+                    else if (e.isShiftDown()) {
 
 
                     } else if (SwingUtilities.isLeftMouseButton(e)) {
-                        raster.clear();
+                        update();
                         trivialLineRasterizer.rasterize(x, y, e.getX(), e.getY(), Color.WHITE);
                     } else if (SwingUtilities.isRightMouseButton(e)) {
-                        raster.clear();
+                        update();
                         dashedLineRasterizer.rasterize(x, y, e.getX(), e.getY(), Color.YELLOW);
                     } else if (SwingUtilities.isMiddleMouseButton(e)) {
 
@@ -133,7 +132,19 @@ public class Controller2D implements Controller {
                 // na klávesu C vymazat plátno
                 if (e.getKeyCode() == KeyEvent.VK_C) {
                     update();
-
+                }
+                // na klávesu P vykreslit polygon (zelene)
+                if (e.getKeyCode() == KeyEvent.VK_P) {
+                    raster.clear();
+                    polygonRasterizer.drawPolygonLines(polygon2d.getPoints());
+                    polygonVykreslen = true;
+                }
+                // na klávesu F vyplnit polygon metodou Scan Line (cervene)
+                if (e.getKeyCode() == KeyEvent.VK_F) {
+                    scanLineFiller = new ScanLine(raster, polygon2d.getPoints());
+                    scanLineFiller.fill();
+                    polygonRasterizer.drawPolygonLines(polygon2d.getPoints());
+                    polygonVykreslen = true;
                 }
             }
         });

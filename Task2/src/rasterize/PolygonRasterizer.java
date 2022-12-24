@@ -32,25 +32,6 @@ public class PolygonRasterizer extends LineRasterizer{
                 rasterize(border);
             }
         } else {System.out.println("Nelze vykreslit, nejedna se o polygon!");}
-//        if (polygonPoint.size()>2) {
-//            Point tmpPoint = new Point();
-//            Point firstPoint = new Point();
-//            int listIndex = 0;
-//            for (Point point : polygonPoint) {
-//                listIndex++;
-//                if (listIndex == 1) {
-//                    firstPoint = new Point(point.getX(), point.getY());
-//
-//                } else {
-//                    rasterize(new Line(tmpPoint, point, Color.GREEN.getRGB()));
-//                    if (listIndex == polygonPoint.size()) {
-//                        rasterize(new Line(firstPoint, point, Color.GREEN.getRGB()));
-//                    }
-//                }
-//                tmpPoint = new Point(point.getX(), point.getY());
-//
-//            }
-//        }
     }
 
     @Override
