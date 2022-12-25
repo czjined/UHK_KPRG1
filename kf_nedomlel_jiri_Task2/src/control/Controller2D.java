@@ -32,12 +32,10 @@ public class Controller2D implements Controller {
     }
 
     public void initObjects(Raster raster) {
-//        rasterizer = new LineRasterizerGraphics(raster);
         trivialLineRasterizer = new TrivialLineRasterizer(raster);
         dashedLineRasterizer = new DashedLineRasterizer(raster);
         polygonRasterizer = new PolygonRasterizer(raster);
         polygon2d = new model.Polygon();
-//        seedFiller = new SeedFill(raster);
     }
 
     @Override
@@ -79,7 +77,6 @@ public class Controller2D implements Controller {
                         int y1 = e.getY();
                         if (polygonVykreslen) {  // Zacinam zadavat body noveho polygonu
                             update();
-//                            polygon2d.clearPoints();
                         }
                         model.Point clickedPoint = new model.Point(x1, y1);
                         raster.setPixel(x1, y1, Color.GREEN.getRGB());
@@ -87,11 +84,7 @@ public class Controller2D implements Controller {
                         polygonVykreslen = false;
 
 
-                    } else if (SwingUtilities.isRightMouseButton(e)) {      // Vykreslim polygon
-                        raster.clear();
-                        polygonRasterizer.drawPolygonLines(polygon2d.getPoints());
-                        polygonVykreslen = true;
-
+                    } else if (SwingUtilities.isRightMouseButton(e)) {
                     }
                 }
             }
@@ -160,11 +153,6 @@ public class Controller2D implements Controller {
     private void update() {
         panel.clear();
         polygon2d.clearPoints();
-
+        polygonVykreslen = false;
     }
-
-    private void hardClear() {
-        panel.clear();
-    }
-
 }
